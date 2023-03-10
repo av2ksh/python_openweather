@@ -1,0 +1,22 @@
+name: Deploy to VPS
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH into server and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.MYVPS_HOST }}
+          username: ${{ secrets.MYVPS_USER }}
+          password: ${{ secrets.MYVPS_PASS }}
+          script: |
+            cd /root/python_openweather
+            git pull https://github.com/av2ksh/python_openweather.git master
+            docker stop pogoda || true
+            docker rm pogoda || true
+            docker build -t pogoda:v0.2 .
+            docker run -d --restart=on-failure --name=pogoda pogoda:v0.2
