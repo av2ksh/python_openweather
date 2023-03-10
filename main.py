@@ -102,7 +102,7 @@ def get_text_messages(message):
         try:
             s_city_name = message.text
             get_city_id(s_city_name)
-            bot.send_message(message.from_user.id, "Ваш город." + s_city_name + "Используйте /prognoz.")  
+            bot.send_message(message.from_user.id, "Ваш город - " + s_city_name + ". Используйте /prognoz.")  
         except:
             bot.send_message(message.from_user.id, "Такого города нет в базе, введите название города, например Minsk:")
 
